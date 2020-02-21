@@ -13,7 +13,7 @@ This method is based on sub-patch voting strategy. The entire workflow consists 
     b) image normalization (WSI_patches_norm.py)  
 2. Image representation (files are in ./subpatch_representation/*)  
     a) split image into sub-patches (WSI_Neg_numpy_dense_mp.py)
-    b) use Google's image compression to encode sub-patches, use the code as the representation vector (WSI_Neg_sub_patch_encoder.py)
+    b) use [Google's image compression](https://github.com/tensorflow/models/tree/master/research/compression) to encode sub-patches, use the code as the representation vector (WSI_Neg_sub_patch_encoder.py)
 3. Patch Scoring model (files are in ./patch_scoring/*) 
     a) KMeans (Did on DSVM with GPU accelerated KNN: [CUDAKmeans](https://github.com/src-d/kmcuda), saved as centroids_samples_#K.npy )
         step 1). clustering 80% negative samples into 10000 clusters; (sub_patches_kmeans.py)   
