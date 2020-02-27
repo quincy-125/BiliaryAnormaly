@@ -45,7 +45,13 @@ def getNearestSamplablePatchfromWSI(rect, patch_size,img_size):
             return None
     return new_rect
 
+###################################################################################################################################
+
+## Following 2 functions do the image classification to remove any uninformative image patches
+
 # saved files with low image content will be discarded
+# Consider the image with larger disk size will have more image contents than those with smaller disk size
+# Images with larger disk size considered as the informative images
 def filter_patch_by_file_size(image_array,file_size_threshold=7.5*1024):
     img = Image.fromarray(image_array,mode="RGB")
     with io.BytesIO() as output:
@@ -57,6 +63,8 @@ def filter_patch_by_file_size(image_array,file_size_threshold=7.5*1024):
         return False
 
 # saved files with low image content will be discarded
+# Some image patches only have a little bit tissue content on the patch edge, most of its patch area are no tissues there
+# Those image patches are considered as the uninformative image patches, which need to be exclude
 def filter_by_content_area(rgb_image_array, area_threshold=0.5, brightness=0.85):
     hsv_img = rgb2hsv(rgb_image_array)
     value_img = hsv_img[:, :, 2]
@@ -67,6 +75,8 @@ def filter_by_content_area(rgb_image_array, area_threshold=0.5, brightness=0.85)
         return True
     else:
         return False
+
+#############################################################################################################################
 
 # delete the gold artifacts
 def filter_gold_artifacts(rgb_image_array, threshold_area=0.1, gold_H=0.3, gold_V=0.85 ):
